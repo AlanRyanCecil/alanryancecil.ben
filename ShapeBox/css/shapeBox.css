@@ -134,7 +134,7 @@ body {
 	margin-left: 1.6vw;
 	border-radius: .2vw;
 	display: inline-block;
-	background-color: #181818 !important;
+	background-color: #181818;
 }
 
 .ui-slider .ui-slider-handle {
