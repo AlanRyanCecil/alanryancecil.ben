@@ -127,7 +127,7 @@ body {
 	overflow: hidden;
 }
 
-.slider {
+.ui-slider {
 	width: .5vw;
 	height: 7.2vw;
 	margin-top: .5vw;
@@ -144,7 +144,7 @@ body {
 	position: absolute;
 	left: -.2vw;
 	border-radius: 50%;
-	background-color: #999;
+	bbackground-color: #999;
 }
 
 #redSlider {
