@@ -144,7 +144,7 @@ body {
 	position: absolute;
 	left: -.2vw;
 	border-radius: 50%;
-	bbackground-color: #999;
+	background-color: #999;
 }
 
 #redSlider {
@@ -348,4 +348,8 @@ button:focus {
 	background-color: #DDD;
 	border-radius: .2vw;
 	font-weight: lighter;
+}
+
+.ui-resizable-handle {
+	display: none;
 }
