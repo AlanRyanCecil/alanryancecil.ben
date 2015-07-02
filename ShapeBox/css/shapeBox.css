@@ -133,8 +133,9 @@ body {
 	margin-top: .5vw;
 	margin-left: 1.6vw;
 	border-radius: .2vw;
+	border-color: #111;
 	display: inline-block;
-	background-color: #181818;
+	background: #181818;
 }
 
 .ui-slider .ui-slider-handle {
@@ -144,22 +145,22 @@ body {
 	position: absolute;
 	left: -.2vw;
 	border-radius: 50%;
-	background-color: #999;
+	background: #999;
 }
 
 #redSlider {
 	margin-left: 1vw;
 }
 #redHandle {
-	background-color: #C24;
+	background: #C24;
 }
 
 #greenHandle {
-	background-color: #4A4;
+	background: #4A4;
 }
 
 #blueHandle {
-	background-color: #42C;
+	background: #42C;
 }
 
 #pad {
