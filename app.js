@@ -20,3 +20,12 @@ var arcomApp = angular.module('arcomApp', ['ngRoute'])
 				redirecTo: '/'
 			});
 	}])
+	.controller('MainController', function () {
+
+	})
+	.controller('ScienceController', function () {
+
+	})
+	.controller('WowController', function () {
+
+	});
