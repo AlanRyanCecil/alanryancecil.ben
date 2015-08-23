@@ -1,21 +1,36 @@
-var smallApp = angular.module('smallApp', ['ngRoute']);
+var arcomApp = angular.module('arcomApp', ['ngRoute']);
 
-smallApp.config(['$routeProvider', function($routeProvider) {
+arcomApp.config(['$routeProvider', function($routeProvider) {
 	$routeProvider
-		.when('/main', {
+		.when('/', {
 			templateUrl: 'views/main.html',
 			controller: 'MainController'
 		})
-		.when('/second', {
+		.when('/science', {
 			templateUrl: 'views/science.html',
-			controller: 'SecondController'
-		});
+			controller: 'ScienceController'
+		})
+		.when('/wow', {
+			templateUrl: 'views/wow.html',
+			controller: 'WowController'
+		})
+		.otherwise({
+            redirectTo: '/'
+        });
 }]);
 
-smallApp.controller('MainController', ['$scope', function($scope){
+arcomApp.controller('MainController', ['$scope', function($scope){
 	
 }]);
 
-smallApp.controller('SecondController', ['$scope', function($scope){
+arcomApp.controller('ScienceController', ['$scope', function($scope){
+
+}]);
+
+arcomApp.controller('WowController', ['$scope', function($scope){
 	
+}]);
+
+arcomApp.controller('IndexController', ['$scope', '$location',function($scope){
+
 }]);
