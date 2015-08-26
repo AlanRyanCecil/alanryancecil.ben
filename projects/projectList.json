@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Weather Getter",
+    "description": "Weather getter gets the weather.",
+    "id": "weather"
+  },
+  {
+    "name": "Contact List",
+    "description": "This is a very dynamic list of contacts.",
+    "id": "contact"
+  },
+  {
+    "name": "Genetify",
+    "description": "This one cures cancer",
+    "id": "genetify"
+  },
+  {
+    "name": "Todo List",
+    "description": "It's a list of things todo.",
+    "id": "todo"
+  },
+  {
+    "name": "Earthquake Tracker",
+    "description": "Earthquake Tracker keeps track of where the earth has been quaking.",
+    "id": "quake"
+  },
+  {
+    "name": "Fart Smeller",
+    "description": "This one isn't good at detecting farts yet. Keep your fingers crossed!",
+    "id": "fartsmeller"
+  }
+]
