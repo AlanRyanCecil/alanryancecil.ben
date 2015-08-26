@@ -25,6 +25,11 @@
     "id": "quake"
   },
   {
+    "name": "Counter Button",
+    "description": "Counter Button is revoultionary in the field of buttons that count.",
+    "id": "counter"
+  },
+  {
     "name": "Fart Smeller",
     "description": "This one isn't good at detecting farts yet. Keep your fingers crossed!",
     "id": "fartsmeller"

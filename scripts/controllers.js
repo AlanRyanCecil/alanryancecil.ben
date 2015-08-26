@@ -46,10 +46,14 @@ arcomApp.controller('TodoController', ['$scope', '$localStorage', function($scop
 	},
 	function () {
 		$localStorage.todos = $scope.todos;
-	}
+	 }
 	);
 }]);
 
-
-
+arcomApp.controller('CounterController', ['$scope', function ($scope) {
+	$scope.numbers = [0];
+	$scope.addNumber = function () {
+		$scope.numbers[$scope.numbers.length] = $scope.numbers.length;
+	}
+}]);
 
