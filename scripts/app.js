@@ -1,4 +1,5 @@
 var arcomApp = angular.module('arcomApp', [
-	'ngRoute',
-	'ui.router'
+	'ui.router',
+	'ui.sortable',
+	'ngStorage'
 	]);

@@ -1,10 +1,9 @@
-<form action="" method="POST" role="form">
+<form role="form" ng-submit="addTodo()">
 	<legend>Todo List</legend>
 	<!-- Add todo -->
-	<div class="form-group" ng-submit="addTodo()">
-		<label for="">Create</label>
+	<div class="form-group"> 
 		<div class="input-group">
-			<input type="text" class="form-control" id="" placeholder="New Todo">
+			<input type="text" class="form-control" ng-model="todo" id="" placeholder="Write a New Todo" aria-label="Add a new item">
 			<span class="input-group-btn">
 				<input type="submit" class="btn btn-primary" value="Add">
 			</span>
@@ -12,11 +11,10 @@
 	</div>
 </form>
 <!-- Todo list -->
-<div>
-	<div class="input-group" style="padding: 5px 10px; cursor: move;">
-		<input type="text" class="form-control">
+<div ng-model="todos" ui-sortable>
+	<div class="input-group" ng-repeat="todo in todos" style="padding: 5px 10px; cursor: move;">
+		<input type="text" class="form-control" ng-model="todo">
 		<span class="input-group-btn">
 			<input type="button" value="X" class="btn btn-danger" aria-label="Remove" ng-click="removeTodo($index)">
 		</span>
 	</div>
-	<!-- </div> -->

@@ -27,14 +27,29 @@ arcomApp.controller('WeatherController', ['$scope', function($scope){
 	
 }]);
 
-arcomApp.controller('TodoController', ['$scope', function($scope){
-	$scope.todos = [];
+arcomApp.controller('TodoController', ['$scope', '$localStorage', function($scope, $localStorage){
+	//$localStorage.$reset();
+	$localStorage.todos = $localStorage.todos || [];
+	$scope.todos = $localStorage.todos;
+
 	$scope.addTodo = function () {
-		$scope.todos.push($scope.todo);
+		$localStorage.todos.unshift($scope.todo);
 		$scope.todo = '';
 	};
 
 	$scope.removeTodo = function (index) {
 		$scope.todos.splice(index, 1);
 	};
+
+	$scope.$watch(function(){
+		return $scope.todos;
+	},
+	function () {
+		$localStorage.todos = $scope.todos;
+	}
+	);
 }]);
+
+
+
+
