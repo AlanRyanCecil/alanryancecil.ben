@@ -1,20 +1,22 @@
-<form role="form" ng-submit="addTodo()">
-	<legend>Todo List</legend>
-	<!-- Add todo -->
-	<div class="form-group"> 
-		<div class="input-group">
-			<input type="text" class="form-control" ng-model="todo" id="" placeholder="Write a New Todo" aria-label="Add a new item">
-			<span class="input-group-btn">
-				<input type="submit" class="btn btn-primary" value="Add">
-			</span>
+<div class="container col-sm-6">
+	<form role="form" ng-submit="addTodo()">
+		<legend>Todo List</legend>
+		<!-- Add todo -->
+		<div class="form-group"> 
+			<div class="input-group">
+				<input type="text" class="form-control" ng-model="todo" id="" placeholder="Write a New Todo" aria-label="Add a new item">
+				<span class="input-group-btn">
+					<input type="submit" class="btn btn-primary" value="Add">
+				</span>
+			</div>
 		</div>
-	</div>
-</form>
-<!-- Todo list -->
-<div ng-model="todos" ui-sortable>
+	</form>
+
+	<!-- Todo list -->
 	<div class="input-group" ng-repeat="todo in todos" style="padding: 5px 10px; cursor: move;">
 		<input type="text" class="form-control" ng-model="todo">
 		<span class="input-group-btn">
 			<input type="button" value="X" class="btn btn-danger" aria-label="Remove" ng-click="removeTodo($index)">
 		</span>
 	</div>
+</div>

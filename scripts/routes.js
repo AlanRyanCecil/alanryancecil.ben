@@ -1,6 +1,6 @@
   // MAIN ROUTES
 
-arcomApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+mainApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 	$urlRouterProvider.otherwise('/');
 	$stateProvider
 		.state('home', {
@@ -32,8 +32,8 @@ arcomApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider
 		/// ROUTER FOR EVERY PROJECT!!!!
 		.state('project', {
 			url: '/project/:id',
-			templateUrl: function(params){
-				return '/projects/' + params.id + '/index.html';
+			templateUrl: function($stateParams){
+				return '/projects/' + $stateParams.id + '/index.html';
 			},
 			controllerProvider: function ($stateParams) {
 				var prefix = $stateParams.id.slice(0, 1).toUpperCase() +
@@ -41,4 +41,9 @@ arcomApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider
 				return prefix + 'Controller';
 			}
 		})
+		.state('forecast', {
+			url: '/forecast/:days',
+			templateUrl: 'projects/weather/forecast.html',
+			controller: 'WeatherController'
+		});
 }]);
