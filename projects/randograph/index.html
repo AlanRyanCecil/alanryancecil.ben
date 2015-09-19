@@ -1,0 +1,4 @@
+<h4> {{ project }} </h4>
+<input type="button" value="place" class="btn btn-primary" ng-click="getPlace()">
+<input type="button" value="insta" class="btn btn-primary" ng-click="getInsta()">
+<h4 ng-repeat="picture in album | limitTo : 5"> {{ picture.title }} </h4>

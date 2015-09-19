@@ -2,6 +2,8 @@ var mainApp = angular.module('mainApp', [
 	'ui.router',
 	'todoApp',
 	'weatherApp',
+	'contactApp',
+	'randographApp',
 	'genetifyApp'
 	]);
 

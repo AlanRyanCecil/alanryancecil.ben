@@ -10,6 +10,11 @@
     "id": "contact"
   },
   {
+    "name": "Ranograph Generator",
+    "description": "Exactly what it sounds like!",
+    "id": "randograph"
+  },
+  {
     "name": "Genetify",
     "description": "This one cures cancer",
     "id": "genetify"

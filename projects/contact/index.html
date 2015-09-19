@@ -1,0 +1,14 @@
+<h1> {{ test }} </h1>
+<button class="btn btn-primary" ng-click="addUser()">Add User</button>
+<p> {{ "Latatude: " + currentUser.address.geo.lat || "..."}} </p>
+<div ng-repeat="user in users">
+<div class="input-group">
+  <span class="input-group-addon btn btn-primary" ng-click="getInfo(user.id)" id="sizing-addon2">Lat</span>
+  <h4> {{ user.name }} </h4>
+</div>
+</div>
+<hr>
+
+<div ng-repeat="contact in contacts">
+	<h4> {{ contact.firstName[0] + " " + contact.lastName[0] }} </h4>
+</div>

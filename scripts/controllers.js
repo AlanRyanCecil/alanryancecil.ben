@@ -36,4 +36,3 @@ mainApp.controller('CounterController', ['$scope', function ($scope) {
 		$scope.numbers[$scope.numbers.length] = $scope.numbers.length;
 	}
 }]);
-
