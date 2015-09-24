@@ -1,4 +1,12 @@
 <h4> {{ project }} </h4>
 <input type="button" value="place" class="btn btn-primary" ng-click="getPlace()">
 <input type="button" value="insta" class="btn btn-primary" ng-click="getInsta()">
-<h4 ng-repeat="picture in album | limitTo : 5"> {{ picture.title }} </h4>
+<input type="button" value="getty" class="btn btn-primary" ng-click="getGetty()">
+<div ng-repeat="picture in album | limitTo : 5">
+	<h4> {{ picture.title }} </h4>
+	<img src=" {{ picture.url }} ">
+</div>
+<div ng-repeat="post in posts | limitTo : 5">
+	<h2> {{ post.title }} </h2>
+	<p> {{ post.body }} </p>
+</div>

@@ -3,6 +3,7 @@ var mainApp = angular.module('mainApp', [
 	'todoApp',
 	'weatherApp',
 	'contactApp',
+	'photoMapperApp',
 	'randographApp',
 	'genetifyApp'
 	]);

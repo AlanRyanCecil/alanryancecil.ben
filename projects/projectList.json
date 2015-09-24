@@ -10,6 +10,11 @@
     "id": "contact"
   },
   {
+    "name": "Photo Mapper",
+    "description": "Mapper of photos.",
+    "id": "photoMapper"
+  },
+  {
     "name": "Ranograph Generator",
     "description": "Exactly what it sounds like!",
     "id": "randograph"
