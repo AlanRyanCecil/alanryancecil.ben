@@ -11,9 +11,39 @@ photoMapperApp.controller('PhotoMapperController', ['$scope', function ($scope) 
 			disableDefaultUI: true
 		};
 		var map = new google.maps.Map(document.getElementById('mapDiv'), mapOptions);
+		// $scope.addKmlLayer(map);
+		$scope.addHeatmapLayer(map);
 	};
 	$scope.$watch('$viewContentLoaded', function () {
 		$scope.initialze();
 		console.log("Fired!!!");
 	});
+
+	$scope.addKmlLayer = function (map) {
+		var offasDykeLayer = new google.maps.KmlLayer('http://hikeview.co.uk/tracks/hikeview-offas-dyke.kml');
+		var sanFranciscoVisit = new google.maps.KmlLayer('http://www.city-sightseeing.us/locations.kml');
+		sanFranciscoVisit.setMap(map);
+	};
+	$scope.addHeatmapLayer = function (map) {
+		var heatmapData = [
+		  new google.maps.LatLng(37.782, -122.447),
+		  new google.maps.LatLng(37.782, -122.445),
+		  new google.maps.LatLng(37.782, -122.443),
+		  new google.maps.LatLng(37.782, -122.441),
+		  new google.maps.LatLng(37.782, -122.439),
+		  new google.maps.LatLng(37.782, -122.437),
+		  new google.maps.LatLng(37.782, -122.435),
+		  new google.maps.LatLng(37.785, -122.447),
+		  new google.maps.LatLng(37.785, -122.445),
+		  new google.maps.LatLng(37.785, -122.443),
+		  new google.maps.LatLng(37.785, -122.441),
+		  new google.maps.LatLng(37.785, -122.439),
+		  new google.maps.LatLng(37.785, -122.437),
+		  new google.maps.LatLng(37.785, -122.435)
+];
+		var heatmap = new google.maps.visualization.HeatmapLayer({
+			data: heatmapData
+		});
+		heatmap.setMap(map);
+	};
 }]);
