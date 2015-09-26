@@ -21,7 +21,7 @@ contactApp.controller('ContactController', ['$scope', '$http', 'UserFactory', fu
 	$scope.addUser = function () {
 		UserFactory.update({MethId: 3, name: "Alan Cecil", company: {name: "Farts", type: "smelly"} });
 	};
-	$scope.test = "Delete!"
+	$scope.heading = "people."
 }]);
 
 // CONTACT SERVICES
