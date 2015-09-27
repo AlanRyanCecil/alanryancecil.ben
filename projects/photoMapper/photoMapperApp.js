@@ -16,7 +16,6 @@ photoMapperApp.controller('PhotoMapperController', ['$scope', function ($scope) 
 	};
 	$scope.$watch('$viewContentLoaded', function () {
 		$scope.initialze();
-		console.log("Fired!!!");
 	});
 
 	$scope.addKmlLayer = function (map) {
