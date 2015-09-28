@@ -1,0 +1,9 @@
+.thumb {
+	float: left;
+}
+.thumb:hover {
+}
+.fade.ng-enter {
+  transition: 2s linear all;
+  opacity: 1;
+}

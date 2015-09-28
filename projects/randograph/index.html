@@ -1,13 +1,24 @@
+<head>
+	<link rel="stylesheet" href="projects/randograph/style.css">
+	<link rel="stylesheet" href="http://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
+	<link rel="stylesheet" href="vendors/bootstrap-image-gallery/bootstrap-image-gallery.min.css">
+</head>
 <h4> {{ project }} </h4>
-<!-- <input type="button" value="place" class="btn btn-primary" ng-click="getPlace()">
-<input type="button" value="insta" class="btn btn-primary" ng-click="getInsta()">
-<input type="button" value="getty" class="btn btn-primary" ng-click="getGetty()">
--->
 <div class="container">
 	<div class="row">
 		<div id="map" style="height: 300px; width: 1050px"></div>
-		<div style="float: left;" ng-repeat="picture in album">
-			<img src="{{ picture.images.thumbnail.url }}">
-		</div>
 	</div>
 </div>
+
+<div id="links" class="thumb" ng-repeat="picture in album">
+    <a href=" {{ picture.images.standard_resolution.url }} " title=" {{ picture.location.name + '\n' + timeTaken(picture.created_time) }} " data-gallery>
+        <img src=" {{ picture.images.thumbnail.url }} ">
+    </a>
+</div>
+<div id="blueimp-gallery" class="blueimp-gallery">
+    <!-- The container for the modal slides -->
+    <div class="slides"></div>
+    <p class="description">Time and Place</p>
+</div>
+
+<script src="http://blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>

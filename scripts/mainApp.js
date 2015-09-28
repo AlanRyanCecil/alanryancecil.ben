@@ -1,5 +1,6 @@
 var mainApp = angular.module('mainApp', [
 	'ui.router',
+	'ngAnimate',
 	'todoApp',
 	'weatherApp',
 	'contactApp',

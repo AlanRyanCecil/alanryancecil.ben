@@ -1,29 +1,10 @@
-var randographApp = angular.module('randographApp', ['ngResource']);
+var randographApp = angular.module('randographApp', ['ngResource', 'ngAnimate']);
 
-// RANDOGRAPH CONTROLLERS
-randographApp.controller('RandographController', ['$scope', '$log', '$filter', 'InstagramFactory', 'PlaceholderFactory', 'PlaceHTTPFactory', 'GettyFactory', 'PostFactory', 'PostHTTP',
-	function($scope, $log, $filter, InstagramFactory, PlaceholderFactory, PlaceHTTPFactory, GettyFactory, PostFactory, PostHTTP){
+// RANDOGRAPH CONTROLLER
+randographApp.controller('RandographController', ['$scope', '$log', '$filter', 'InstagramFactory', 'MapService',
+	function($scope, $log, $filter, InstagramFactory, MapService){
+
 	$scope.project = "Randograph Generator";
-		$scope.mapOptions = {
-			center: new google.maps.LatLng(37.759703, -122.428093),
-			zoom: 18,
-			disableDefaultUI: true
-		};
-		$scope.map = new google.maps.Map(document.getElementById('map'), $scope.mapOptions);
-		$scope.map.addListener('dragend', function () {
-			$scope.updatePhotos();
-		});
-	$scope.updatePhotos = function () {
-		var center = $scope.map.getCenter();
-		var lat = center.lat();
-		var lng = center.lng();
-		$scope.getInsta(lat, lng);
-	}
-	$scope.getPlace = function () {
-		var data = PlaceholderFactory.query();
-		console.log(data);
-		$scope.album = data;
-	};
 	$scope.getInsta = function (lat, lng) {
 		var params =  {lat: lat, lng: lng, distance: '200', count: '21'};   
 		InstagramFactory.query(params, function (response) {
@@ -31,17 +12,24 @@ randographApp.controller('RandographController', ['$scope', '$log', '$filter', '
 			console.log($scope.album);
 		});
 	};
-	$scope.getGetty = function () {
-		var data = GettyFactory.get();
-		$scope.album = data;
-		console.log(data);
+
+	$scope.updatePhotos = function () {
+		var center = MapService.map.getCenter(),
+			lat = center.lat(),
+			lng = center.lng();
+		$scope.getInsta(lat, lng);
 	};
-	$scope.gettyHttp = function () {
-		$scope.album = PlaceHTTPFactory.query();
-	};
-	$scope.$watch('$viewCOntentLoaded', function () {
+	$scope.$watch('$viewContentLoaded', function () {
 		$scope.updatePhotos();
 	});
+	MapService.map.addListener('dragend', function () {
+		$scope.updatePhotos();
+	});
+	
+
+	$scope.timeTaken = function (date) {
+		return $filter('date')(date * 1000, 'EEEE, MMMM d h:mm a');
+	};
 }]);
 
 // RANDOGRAPH FACTORIES
@@ -52,30 +40,31 @@ randographApp.factory('InstagramFactory', ['$resource', function ($resource){
 		query: {method: 'JSONP'}
 	});
 }]);
-randographApp.factory('PlaceholderFactory', ['$resource', function ($resource) {
-		return $resource('http://jsonplaceholder.typicode.com/photos');
+
+// RANDOGRAPH SERVICES
+randographApp.service('MapService', ['$log', function($log){
+	var thisMap = {},
+		mapOptions = {
+			center: new google.maps.LatLng(37.759703, -122.428093),
+			zoom: 17,
+			disableDefaultUI: true
+		};
+		thisMap.map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+	var sampleCircle = new google.maps.Circle({
+		fillColor: '#0099FF',
+		fillOpacity: .15,
+		strokeColor: '#0099FF',
+		strokeOpacity: .2,
+		map: thisMap.map,
+		center: thisMap.map.getCenter(),
+		radius: 200
+	});
+	thisMap.map.addListener('bounds_changed', function () {
+		sampleCircle.setCenter(thisMap.map.getCenter());
+	});
+	return thisMap;
 }]);
-randographApp.factory('GettyFactory', ['$resource', function ($resource) {
-	return $resource('https://api.gettyimages.com:443/v3/search/images', {}, {
-		get: {
-			method: 'GET',
-			headers: {
-				key: '6v8sm7xqjh36dseakm8gyc33'
-			}
-		}
-	})
-}]);
-randographApp.factory('PostFactory', ['$resource', function ($resource) {
-	return $resource('http://jsonplaceholder.typicode.com/posts/:posId', {posId: '@id'});
-}]);
-randographApp.factory('PostHTTP', ['$http', function ($http) {
-	return {
-		getPost: function () {
-			 $http.get('http://jsonplaceholder.typicode.com/posts');
-		}
-	}
-}]);
-randographApp.factory('PlaceHTTPFactory', ['$http', function ($http) {
-	var data = $http.get('http://jsonplaceholder.typicode.com/photos');
-	return data;
+randographApp.service('glop', [function(){
+		console.log('glop');
 }]);
