@@ -1,24 +1,52 @@
 <head>
 	<link rel="stylesheet" href="projects/randograph/style.css">
-	<link rel="stylesheet" href="http://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
-	<link rel="stylesheet" href="vendors/bootstrap-image-gallery/bootstrap-image-gallery.min.css">
 </head>
 <h4> {{ project }} </h4>
 <div class="container">
-	<div class="row">
-		<div id="map" style="height: 300px; width: 1050px"></div>
+	<div id="map" class="col-sm-12" style="height: 350px;"></div>
+	<div id="links">
+	    <a ng-repeat="picture in album" title=" {{ picture.location.name + '\n' + timeTaken(picture.created_time) }} " data-toggle="modal" data-target="#imageModal"
+	    	ng-click="setImage($index)">
+	        <img src=" {{ picture.images.thumbnail.url }} " class="row no-gutter col-sm-2 img-responsive">
+	    </a>
 	</div>
 </div>
 
-<div id="links" class="thumb" ng-repeat="picture in album">
-    <a href=" {{ picture.images.standard_resolution.url }} " title=" {{ picture.location.name + '\n' + timeTaken(picture.created_time) }} " data-gallery>
-        <img src=" {{ picture.images.thumbnail.url }} ">
-    </a>
+<div id="imageModal" class="modal fade">
+	<div class="modal-dialog">
+			<div class="modal-body">
+				<img src=" {{ currentPhoto }} ">
+		    </div>
+	</div>
 </div>
+
+
+
+
+<!-- Modal -->
+<div id="tempModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        <p>Some text in the modal.</p>
+        <img src="https://scontent.cdninstagram.com/hphotos-xap1/t51.2885-15/s640x640/sh0.08/e35/10349706_1655666581311712_54945954_n.jpg">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <div id="blueimp-gallery" class="blueimp-gallery">
     <!-- The container for the modal slides -->
     <div class="slides"></div>
     <p class="description">Time and Place</p>
 </div>
-
-<script src="http://blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>

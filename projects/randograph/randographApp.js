@@ -6,30 +6,35 @@ randographApp.controller('RandographController', ['$scope', '$log', '$filter', '
 
 	$scope.project = "Randograph Generator";
 	$scope.getInsta = function (lat, lng) {
-		var params =  {lat: lat, lng: lng, distance: '200', count: '21'};   
+		var params =  {lat: lat, lng: lng, distance: '200', count: '12'};   
 		InstagramFactory.query(params, function (response) {
 			$scope.album = response.data;
 			console.log($scope.album);
 		});
 	};
-
-	$scope.updatePhotos = function () {
-		var center = MapService.map.getCenter(),
-			lat = center.lat(),
+	$scope.updatePhotos = function (center) {
+		var lat = center.lat(),
 			lng = center.lng();
 		$scope.getInsta(lat, lng);
 	};
-	$scope.$watch('$viewContentLoaded', function () {
-		$scope.updatePhotos();
-	});
-	MapService.map.addListener('dragend', function () {
-		$scope.updatePhotos();
-	});
-	
-
+	$scope.setImage = function (element) {
+		$scope.currentPhoto = $scope.album[element].images.standard_resolution.url;
+	};
 	$scope.timeTaken = function (date) {
 		return $filter('date')(date * 1000, 'EEEE, MMMM d h:mm a');
 	};
+
+	$scope.$watch('$viewContentLoaded', function () {
+		$scope.updatePhotos(MapService.map.getCenter());
+	});
+	MapService.map.addListener('dragend', function () {
+		var center = MapService.map.getCenter();
+		$scope.updatePhotos(center);
+	});
+	MapService.map.addListener('click', function () {
+		var center = MapService.map.getCenter();
+		$scope.updatePhotos(center);
+	});
 }]);
 
 // RANDOGRAPH FACTORIES
@@ -44,8 +49,9 @@ randographApp.factory('InstagramFactory', ['$resource', function ($resource){
 // RANDOGRAPH SERVICES
 randographApp.service('MapService', ['$log', function($log){
 	var thisMap = {},
+		mapCenter = new google.maps.LatLng(37.759703, -122.428093),
 		mapOptions = {
-			center: new google.maps.LatLng(37.759703, -122.428093),
+			center: mapCenter,
 			zoom: 17,
 			disableDefaultUI: true
 		};
@@ -58,13 +64,42 @@ randographApp.service('MapService', ['$log', function($log){
 		strokeOpacity: .2,
 		map: thisMap.map,
 		center: thisMap.map.getCenter(),
-		radius: 200
+		radius: 200,
+		clickable: false
 	});
 	thisMap.map.addListener('bounds_changed', function () {
 		sampleCircle.setCenter(thisMap.map.getCenter());
 	});
+	thisMap.map.addListener('click', function (event) {
+		thisMap.map.panTo(event.latLng);
+	});
 	return thisMap;
 }]);
-randographApp.service('glop', [function(){
-		console.log('glop');
+
+
+randographApp.controller('GalleryController', ['$log', function($log){
+
+}]);
+// RANDOGRAPH DIRECTIVES
+randographApp.directive('galleryFade', ['$log', function($log){
+	// Runs during compile
+	return {
+		// name: '',
+		// priority: 1,
+		// terminal: true,
+		// scope: {}, // {} = isolate, true = child, false/undefined = no change
+		// controller: function($scope, $element, $attrs, $transclude) {},
+		// require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
+		// restrict: 'A', // E = Element, A = Attribute, C = Class, M = Comment
+		// template: '',
+		// templateUrl: '',
+		// replace: true,
+		// transclude: true,
+		// compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
+		restrict: 'E',
+		controller: 'GalleryController',
+		link: function($scope, iElm, iAttrs, controller) {
+			
+		}
+	};
 }]);
