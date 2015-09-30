@@ -21,7 +21,10 @@ randographApp.controller('RandographController', ['$scope', '$log', '$filter', '
 		$scope.currentPhoto = $scope.album[element];
 	};
 	$scope.timeTaken = function (date) {
-		return $filter('date')(date * 1000, 'EEEE, MMMM d h:mm a');
+		var drate =  {};
+			drate.day = $filter('date')(date * 1000, 'EEEE, MMMM d');
+			drate.clock = $filter('date')(date * 1000, 'h:mm a');
+		return drate;
 	};
 
 	$scope.$watch('$viewContentLoaded', function () {

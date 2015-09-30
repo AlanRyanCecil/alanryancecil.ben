@@ -28,3 +28,6 @@
 	border: 2px solid #000000;
 	background: no-repeat;
 }
+.date {
+	line-height: 50%;
+}
