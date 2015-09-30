@@ -6,7 +6,7 @@ randographApp.controller('RandographController', ['$scope', '$log', '$filter', '
 
 	$scope.project = "Randograph Generator";
 	$scope.getInsta = function (lat, lng) {
-		var params =  {lat: lat, lng: lng, distance: '200', count: '24'};   
+		var params =  {lat: lat, lng: lng, distance: '200', count: '32'};   
 		InstagramFactory.query(params, function (response) {
 			$scope.album = response.data;
 			console.log($scope.album);
