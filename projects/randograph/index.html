@@ -4,10 +4,13 @@
 <h4> {{ project }} </h4>
 <div class="container">
 	<div id="map" class="col-sm-12" style="height: 350px;"></div>
-	<div id="links">
+	<div>
 	    <a ng-repeat="picture in album" title=" {{ picture.location.name + '\n' + timeTaken(picture.created_time) }} " data-toggle="modal" data-target="#imageModal"
 	    	ng-click="setImage($index)">
+	    	<!-- <div class="col-sm-2 testDiv" style="background-image: url({{ picture.images.thumbnail.url }})"></div> -->
+	    	<div>
 	        <img src=" {{ picture.images.thumbnail.url }} " class="row no-gutter col-sm-2 img-responsive">
+	        </div>
 	    </a>
 	</div>
 </div>
@@ -15,7 +18,11 @@
 <div id="imageModal" class="modal fade">
 	<div class="modal-dialog">
 			<div class="modal-body">
-				<img src=" {{ currentPhoto }} ">
+				<img src=" {{ currentPhoto.images.standard_resolution.url }} ">
+		    </div>
+		    <div class="modal-header">
+				<h3 class="modal-title"> {{ currentPhoto.location.name }} </h3>
+				<p> {{ timeTaken(currentPhoto.created_time) }} </p>
 		    </div>
 	</div>
 </div>
@@ -35,7 +42,7 @@
       </div>
       <div class="modal-body">
         <p>Some text in the modal.</p>
-        <img src=" {{ currentPhoto }} ">
+        <img src=" {{ currentPhoto.images.standard_resolution.url }} ">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

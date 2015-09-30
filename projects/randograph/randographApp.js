@@ -6,7 +6,7 @@ randographApp.controller('RandographController', ['$scope', '$log', '$filter', '
 
 	$scope.project = "Randograph Generator";
 	$scope.getInsta = function (lat, lng) {
-		var params =  {lat: lat, lng: lng, distance: '200', count: '12'};   
+		var params =  {lat: lat, lng: lng, distance: '200', count: '24'};   
 		InstagramFactory.query(params, function (response) {
 			$scope.album = response.data;
 			console.log($scope.album);
@@ -18,7 +18,7 @@ randographApp.controller('RandographController', ['$scope', '$log', '$filter', '
 		$scope.getInsta(lat, lng);
 	};
 	$scope.setImage = function (element) {
-		$scope.currentPhoto = $scope.album[element].images.standard_resolution.url;
+		$scope.currentPhoto = $scope.album[element];
 	};
 	$scope.timeTaken = function (date) {
 		return $filter('date')(date * 1000, 'EEEE, MMMM d h:mm a');
