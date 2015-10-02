@@ -5,6 +5,7 @@ randographApp.controller('RandographController', ['$scope', '$log', '$filter', '
 	function($scope, $log, $filter, InstagramFactory, MapService){
 
 	$scope.project = "Randograph Generator";
+	
 	$scope.getInsta = function (lat, lng) {
 		var params =  {lat: lat, lng: lng, distance: '200', count: '32'};   
 		InstagramFactory.query(params, function (response) {
@@ -17,18 +18,22 @@ randographApp.controller('RandographController', ['$scope', '$log', '$filter', '
 			lng = center.lng();
 		$scope.getInsta(lat, lng);
 	};
-	$scope.setImage = function (element) {
-		$scope.currentPhoto = $scope.album[element];
+	$scope.setCurrentPhoto = function (picture) {
+		$scope.currentPhoto = {};
+		$scope.currentPhoto.url = picture.images.standard_resolution.url;
+		$scope.currentPhoto.name = picture.location.name;
+		$scope.currentPhoto.day = $filter('date')(picture.created_time * 1000, 'EEEE, MMMM d yyyy');
+		$scope.currentPhoto.time = $filter('date')(picture.created_time * 1000, 'h:mm a');
 	};
 	$scope.timeTaken = function (date) {
-		var drate =  {};
-			drate.day = $filter('date')(date * 1000, 'EEEE, MMMM d');
-			drate.clock = $filter('date')(date * 1000, 'h:mm a');
-		return drate;
+			return $filter('date')(date * 1000, 'EEEE, MMMM d');
 	};
-
+	$scope.loog = function (pic) {
+		$log.log(pic);
+	}
 	$scope.$watch('$viewContentLoaded', function () {
-		$scope.updatePhotos(MapService.map.getCenter());
+		var center = MapService.map.getCenter();
+		$scope.updatePhotos(center);
 	});
 	MapService.map.addListener('dragend', function () {
 		var center = MapService.map.getCenter();
@@ -66,7 +71,7 @@ randographApp.service('MapService', ['$log', function($log){
 		strokeColor: '#0099FF',
 		strokeOpacity: .2,
 		map: thisMap.map,
-		center: thisMap.map.getCenter(),
+		center: mapCenter,
 		radius: 200,
 		clickable: false
 	});
@@ -79,10 +84,6 @@ randographApp.service('MapService', ['$log', function($log){
 	return thisMap;
 }]);
 
-
-randographApp.controller('GalleryController', ['$log', function($log){
-
-}]);
 // RANDOGRAPH DIRECTIVES
 randographApp.directive('galleryFade', ['$log', function($log){
 	// Runs during compile

@@ -36,7 +36,7 @@ weatherApp.service('weatherService', ['$resource', function($resource){
 }]);
 
 
-///		DIRECTIVES
+/// DIRECTIVES
 
 weatherApp.directive('weatherReport', function () {
 	return {	

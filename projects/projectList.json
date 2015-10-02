@@ -35,6 +35,11 @@
     "id": "quake"
   },
   {
+    "name": "ZoomBox",
+    "description": "Zooooooooooooom",
+    "id": "zoomBox"
+  },
+  {
     "name": "Counter Button",
     "description": "Counter Button is revoultionary in the field of buttons that count.",
     "id": "counter"

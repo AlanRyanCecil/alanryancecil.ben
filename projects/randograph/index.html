@@ -5,8 +5,8 @@
 <div class="container">
 	<div id="map" class="col-sm-12" style="height: 350px;"></div>
 	<div>
-	    <a ng-repeat="picture in album" title=" {{ picture.location.name + '\n' + timeTaken(picture.created_time).day }} " data-toggle="modal" data-target="#imageModal"
-	    	ng-click="setImage($index)">
+	    <a ng-repeat="picture in album" title=" {{ picture.location.name + '\n' + timeTaken(picture.created_time) }} " data-toggle="modal" data-target="#imageModal"
+	    	ng-click="setCurrentPhoto(picture)">
 	    	<!-- <div class="col-sm-2 testDiv" style="background-image: url({{ picture.images.thumbnail.url }})"></div> -->
 	    	<div>
 	        <img src=" {{ picture.images.thumbnail.url }} " class="row no-gutter col-sm-2 img-responsive">
@@ -18,13 +18,13 @@
 <div id="imageModal" class="modal fade">
 	<div class="modal-dialog">
 			<div class="modal-body">
-				<img src=" {{ currentPhoto.images.standard_resolution.url }} ">
+				<img src=" {{ currentPhoto.url }} ">
 		    </div>
 		    <div class="modal-header">
-				<h3 class="modal-title"> {{ currentPhoto.location.name }} </h3>
+				<h3 class="modal-title"> {{ currentPhoto.name }} </h3>
 				<br>
-				<p class="date"> {{ timeTaken(currentPhoto.created_time).day }} </p>
-				<p class="date"> {{ timeTaken(currentPhoto.created_time).clock }} </p>
+				<p class="date"> {{ currentPhoto.day }} </p>
+				<p class="date"> {{ currentPhoto.time }} </p>
 		    </div>
 	</div>
 </div>

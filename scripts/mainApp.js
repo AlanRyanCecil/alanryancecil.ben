@@ -6,7 +6,8 @@ var mainApp = angular.module('mainApp', [
 	'contactApp',
 	'photoMapperApp',
 	'randographApp',
-	'genetifyApp'
+	'genetifyApp',
+	'zoomBoxApp'
 	]);
 
 
