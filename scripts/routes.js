@@ -31,7 +31,7 @@ mainApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider,
 
 		/// ROUTER FOR EVERY PROJECT!!!!
 		.state('project', {
-			url: '/project/:id',
+			url: '/projects/:id',
 			templateUrl: function($stateParams){
 				return '/projects/' + $stateParams.id + '/index.html';
 			},
