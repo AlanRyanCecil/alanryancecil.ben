@@ -34,7 +34,9 @@ zoomBoxApp.directive('zoomBox', ['$log', '$interval', function ($log, $interval)
 			var destroy = function () {
 				var boxes  = elem.children('.shine'),
 				numb = boxes.length - 1;
-				boxes[numb].remove();
+				if (numb >= 0) {
+					boxes[numb].remove();
+				}
 			};
 			$interval(destroy, speed, startDepth);
 		});
