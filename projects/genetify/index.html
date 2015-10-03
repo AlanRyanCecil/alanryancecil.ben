@@ -1,3 +1,17 @@
 <h1> {{ gene }} </h1>
 <h3>{{ 1443401967 * 1000| date : 'EEEE, MMMM d, y' }}</h3>
 <h4>{{ 1443401967 * 1000| date : 'h:mm a' }}</h4>
+
+
+<form action="" method="POST" class="form-inline" role="form">
+
+	<div class="form-group">
+		<label class="sr-only" for="">label</label>
+		<input type="number" class="form-control" id="" placeholder="Input field" ng-model="variable">
+	</div>
+
+	
+
+	<button type="submit" class="btn btn-primary">Submit</button>
+</form>
+<h1> {{ variable }} </h1>

@@ -49,10 +49,8 @@ zoomBoxApp.directive('zoomBox', ['$log', '$interval', function ($log, $interval)
 		scope: {
 			height: "@",
 			width: "@",
-			speed: "@",
-			depth: "@",
-			space: "@",
 			color: "@"
+			// attrs: speed, depth, space
 		}
 	}
 }]);
