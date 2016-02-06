@@ -3,14 +3,12 @@
 </head>
 <h4> {{ project }} </h4>
 <div class="container">
-	<div id="map" class="col-sm-12" style="height: 350px;"></div>
+	<div id="instaMap" class="col-sm-12" style="height: 350px;"></div>
 	<div>
-	    <a ng-repeat="picture in album" title=" {{ picture.location.name + '\n' + timeTaken(picture.created_time) }} " data-toggle="modal" data-target="#imageModal"
-	    	ng-click="setCurrentPhoto(picture)">
-	    	<!-- <div class="col-sm-2 testDiv" style="background-image: url({{ picture.images.thumbnail.url }})"></div> -->
-	    	<div>
-	        <img src=" {{ picture.images.thumbnail.url }} " class="row no-gutter col-sm-2 img-responsive">
-	        </div>
+	    <a ng-repeat="picture in album" title=" {{ picture.location.name + '\n' + timeTaken(picture.created_time) }} " data-toggle="modal" data-target="#imageModal" ng-click="setCurrentPhoto(picture)">
+			<div>
+			    <img src=" {{ picture.images.thumbnail.url }} " class="row no-gutter col-sm-2 img-responsive">
+		    </div>
 	    </a>
 	</div>
 </div>
@@ -27,29 +25,4 @@
 				<p class="date"> {{ currentPhoto.time }} </p>
 		    </div>
 	</div>
-</div>
-
-
-
-
-<!-- Modal -->
-<div id="tempModal" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-lg">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Modal Header</h4>
-      </div>
-      <div class="modal-body">
-        <p>Some text in the modal.</p>
-        <img src=" {{ currentPhoto.images.standard_resolution.url }} ">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-
-  </div>
 </div>

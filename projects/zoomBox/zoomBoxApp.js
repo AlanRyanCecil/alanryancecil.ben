@@ -18,12 +18,12 @@ zoomBoxApp.directive('zoomBox', ['$log', '$interval', function ($log, $interval)
 					high = elem.height() - space,
 					wide = elem.width() - space,
 					color = Number(attrs.color) + space,
-					box = angular.element('<div class="shine" style="height: ' + 
+					box = '<div class="shine" style="height: ' + 
 						high + 'px; width: ' + 
 						wide + 'px; top: ' + 
 						space/2 + 'px; left: ' + 
 						space/2 + 'px; position: absolute; background-color: #' + 
-						color + ';"></div>');
+						color + ';"></div>';
 				elem.append(box);
 			};
 			var inMotion = $interval(build, speed, depth);

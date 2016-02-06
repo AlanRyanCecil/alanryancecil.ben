@@ -1,8 +1,8 @@
 var randographApp = angular.module('randographApp', ['ngResource', 'ngAnimate']);
 
 // RANDOGRAPH CONTROLLER
-randographApp.controller('RandographController', ['$scope', '$log', '$filter', 'InstagramFactory', 'MapService',
-	function($scope, $log, $filter, InstagramFactory, MapService){
+randographApp.controller('RandographController', ['$scope', '$log', '$filter', 'InstagramFactory', 'InstaMapFactory',
+	function ($scope, $log, $filter, InstagramFactory, InstaMapFactory){
 
 	$scope.project = "Randograph Generator";
 	
@@ -32,15 +32,15 @@ randographApp.controller('RandographController', ['$scope', '$log', '$filter', '
 		$log.log(pic);
 	}
 	$scope.$watch('$viewContentLoaded', function () {
-		var center = MapService.map.getCenter();
+		var center = InstaMapFactory.map.getCenter();
 		$scope.updatePhotos(center);
 	});
-	MapService.map.addListener('dragend', function () {
-		var center = MapService.map.getCenter();
+	InstaMapFactory.map.addListener('dragend', function () {
+		var center = InstaMapFactory.map.getCenter();
 		$scope.updatePhotos(center);
 	});
-	MapService.map.addListener('click', function () {
-		var center = MapService.map.getCenter();
+	InstaMapFactory.map.addListener('click', function () {
+		var center = InstaMapFactory.map.getCenter();
 		$scope.updatePhotos(center);
 	});
 }]);
@@ -54,8 +54,7 @@ randographApp.factory('InstagramFactory', ['$resource', function ($resource){
 	});
 }]);
 
-// RANDOGRAPH SERVICES
-randographApp.service('MapService', ['$log', function($log){
+randographApp.factory('InstaMapFactory', ['$log', function($log){
 	var thisMap = {},
 		mapCenter = new google.maps.LatLng(37.759703, -122.428093),
 		mapOptions = {
@@ -63,7 +62,8 @@ randographApp.service('MapService', ['$log', function($log){
 			zoom: 17,
 			disableDefaultUI: true
 		};
-		thisMap.map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+	thisMap.map = new google.maps.Map(document.getElementById('instaMap'), mapOptions);
 
 	var sampleCircle = new google.maps.Circle({
 		fillColor: '#0099FF',

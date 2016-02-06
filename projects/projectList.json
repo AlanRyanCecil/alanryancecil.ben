@@ -40,6 +40,11 @@
     "id": "zoomBox"
   },
   {
+    "name": "Waves of sound and light",
+    "description": "An exploration of time.",
+    "id": "waves"
+  },
+  {
     "name": "Counter Button",
     "description": "Counter Button is revoultionary in the field of buttons that count.",
     "id": "counter"

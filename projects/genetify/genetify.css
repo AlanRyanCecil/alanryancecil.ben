@@ -1,0 +1,11 @@
+.mouseFade {
+	background-color: transparent;
+	opacity: 0;
+	transition: opacity .5s ease;
+	pointer-events: auto;
+}
+.mouseFade.dark {
+	opacity: 1;
+	transition: opacity .5s ease;
+	pointer-events: auto;
+}
