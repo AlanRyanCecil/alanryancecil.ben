@@ -1,12 +1,20 @@
   // MAIN ROUTES
 
 mainApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
-	$urlRouterProvider.otherwise('/');
+	$urlRouterProvider.otherwise('/home');
 	$stateProvider
 		.state('home', {
-			url: '/',
-			templateUrl: 'views/main.html',
-			controller: 'MainController'
+			url: '/home',
+			view: {
+				'PageBackground': {
+					templateUrl: 'style/PageBackground.html',
+					controller: 'PageStyleController'
+				},
+				'content': {
+					templateUrl: 'views/main.html',
+					controller: 'MainController'
+				}
+			}
 		})
 		.state('brain', {
 			url: '/brain',

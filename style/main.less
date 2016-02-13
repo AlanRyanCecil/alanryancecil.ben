@@ -1,3 +1,5 @@
+@import "mixins";
+
 #bgImage {
     height: 100vh;
     width: 100vw;
@@ -6,19 +8,26 @@
     position: absolute;;
     top: 0px;
     left: 0px;
+    .animate(1s, 6s, ease);
     z-index: -1;
 }
-.headbar {
+#headbar {
     height: 8em;
     background-color: white;
     /*box-shadow: 0 20px 40px white;*/
     /*box-shadow: 0 20px 40px rgba(0, 0, 0, .3);*/
     opacity: .7;
+    .animate(2s, 1s, ease);
 }
-.title {
+#title {
     font-family: helvetica;
     font-size: 7em;
     position: absolute;
     margin: 0px;
-    margin-left: 5vw;
+    margin-left: 3vw;
+    .animate(3s, 1s, ease-out);
+    transition: all 10s ease;
+}
+.blur {
+    /*-webkit-filter: blur(10px);*/
 }
