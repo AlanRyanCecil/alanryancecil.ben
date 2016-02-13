@@ -3,9 +3,9 @@
 mainApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 	$urlRouterProvider.otherwise('/home');
 	$stateProvider
-		.state('home', {
+		.state('home',{
 			url: '/home',
-			view: {
+			views: {
 				'PageBackground': {
 					templateUrl: 'style/PageBackground.html',
 					controller: 'PageStyleController'
