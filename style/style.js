@@ -12,17 +12,17 @@ angular.module('mainApp')
         var box;
 
         function initScene () {
-            renderer.setSize( 500, 500 );
+            renderer.setSize( 448, 448 );
 
             renderer.setClearColor(0x555555, 0);
             document.getElementById('webgl-container').appendChild(renderer.domElement);
 
             scene.add(light);
 
-            camera = new THREE.PerspectiveCamera( 45, 1, 0.1, 1000 );
+            camera = new THREE.PerspectiveCamera( 35, 1, 0.1, 1000 );
             // camera.position.x = 0;
             // camera.position.y = -120;
-            camera.position.z = 50;
+            camera.position.z = 52;
             scene.add( camera );
 
             var sphere = new THREE.Mesh(
@@ -30,8 +30,8 @@ angular.module('mainApp')
                 new THREE.MeshBasicMaterial( {
                     color: 0xDDDDDD,
                     transparent: true,
-                    opacity: 1,
-                    wireframe: true
+                    opacity: .85,
+                    wireframe: false
                 } )
             );
             scene.add(sphere);
