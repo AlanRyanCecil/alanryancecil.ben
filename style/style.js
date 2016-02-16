@@ -28,9 +28,9 @@ angular.module('mainApp')
             var sphere = new THREE.Mesh(
                 new THREE.SphereGeometry(15, 60, 2),
                 new THREE.MeshBasicMaterial( {
-                    color: 0xDDDDDD,
+                    color: 0xFF4400,
                     transparent: true,
-                    opacity: .85,
+                    opacity: .8,
                     wireframe: false
                 } )
             );
@@ -59,7 +59,7 @@ angular.module('mainApp')
             function render () {
                 sphere.rotation.z = 45 * (Math.PI / 180);
                 sphere.rotation.x += 0.01;
-                // sphere.rotation.y += 0.01;
+                sphere.rotation.y += 0.01;
                 renderer.render(scene, camera);
                 requestAnimationFrame(render);
             }
