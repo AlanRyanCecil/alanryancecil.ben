@@ -1,4 +1,5 @@
 @import "mixins";
+@import "keyframes";
 
 #bgImage {
     height: 100vh;
@@ -8,24 +9,53 @@
     position: absolute;;
     top: 0px;
     left: 0px;
-    .animate(1s, 6s, ease);
+    /*.animate(1s, 6s, ease);*/
+    animation: blurBG 5s ease-out 1;
     z-index: -1;
+
 }
 #headbar {
     height: 8em;
+    width: 70vw;
+    margin-top: 3em;
+    /*.linear-gradient(left, rgba(255, 255, 255, .7), rgba(255, 255, 255, 0));*/
     background-color: white;
     opacity: .7;
-    .animate(2s, 1s, ease);
+    animation: rotateHead 2s ease-out 1;
+}
+#titleBox {
+    animation: blurTitle 5s ease 1;
 }
 #title {
     font-family: helvetica;
     font-size: 7em;
     position: absolute;
     margin: 0px;
+    margin-top: .1em;
     margin-left: 3vw;
     .animate(3s, 1s, ease-out);
-    transition: all 10s ease;
 }
-.blur {
-    -webkit-filter: blur(10px);
+.circle {
+    fill: none;
+    stroke: black;
+    stroke-width: .1em;
+    opacity: .7;
+}
+#mainSvg {
+    width: 100vw;
+    height: 100vh;
+    animation: blurBG 3s ease-out 1;
+}
+#mainCircle {
+    stroke-width: 1em;
+    cx: 750;
+    cy: 600;
+    r: 260;
+}
+#secondCircle {
+    stroke-width: .5em;
+    opacity: .3;
+    cx: 120em;
+    cy: 10em;
+    r: 5em;
 }
