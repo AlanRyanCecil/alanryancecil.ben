@@ -2,12 +2,21 @@ body {
     z-index: -10;
 }
 
-#background-main {
+.background-element {
     position: absolute;
     top: 0;
     left: 0;
+    z-index: -1;
+}
+
+#background-main {
+    background-image: url('../assets/images/bench_tree.jpg');
+    background-size: cover;
+    // position: absolute;
+    // top: 0;
+    // left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: blue;
-    z-index: -1;
+    // background-color: gray;
+    // z-index: -1;
 }

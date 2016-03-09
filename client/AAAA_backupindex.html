@@ -16,11 +16,6 @@
       <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
       <!-- endbower -->
     <!-- endbuild -->
-
-
-    <link rel="stylesheet" href="xxxx.css">
-
-
     <!-- build:css({.tmp,client}) app/app.css -->
     <link rel="stylesheet" href="app/app.css">
       <!-- injector:css -->
@@ -45,7 +40,7 @@
     </nav>
 
     <main>
-      <a href="/animation"> <md-button style="position: absolute; z-index: 100;">Animation</md-button> </a>
+      <a href="/animation"> <md-button style="position: absolute;">Animation</md-button> </a>
       <ui-view name="main"></ui-view>
     </main>
 
@@ -89,6 +84,13 @@
       <script src="socket.io-client/socket.io.js"></script>
     <!-- endbuild -->
 
+        
+        <!-- build:js(.tmp) app/app.js -->
+        
+        <script src="app/app.js"></script>
+          <!-- injector:js -->
+
+
 
 
 
@@ -116,7 +118,7 @@
                 if ( pixel.a < 0.5 ) discard;
                 gl_FragData[ 0 ] = pack_depth( gl_FragCoord.z );
             }
-          </script>
+        </script>
 
 <!--           <script src="app/backgroundThree/vertexShaderDepth.frag"></script>
           <script src="app/backgroundThree/fragmentShaderDepth.frag"></script>
@@ -124,16 +126,7 @@
 
           <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r74/three.min.js"></script>
           <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-          <script src="vendor/three.js/examples/js/loaders/SVGLoader.js"></script>
-          <script src="vendor/three.js/examples/js/renderers/SVGRenderer.js"></script>
-          <script src="vendor/three.js/examples/js/renderers/CSS3DRenderer.js"></script>
 
-
-        <!-- build:js(.tmp) app/app.js -->
-
-          <script src="app/app.js"></script>
-
-          <!-- injector:js -->
           <script src="app/account/account.js"></script>
           <script src="app/account/login/login.controller.js"></script>
           <script src="app/account/settings/settings.controller.js"></script>
@@ -163,5 +156,5 @@
           <script src="components/socket/socket.service.js"></script>
           <!-- endinjector -->
         <!-- endbuild -->
-  </body>
+</body>
 </html>

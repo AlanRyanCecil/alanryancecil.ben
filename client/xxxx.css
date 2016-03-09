@@ -1,0 +1,9 @@
+.transparent {
+    background-color: rgba(255, 255, 255, .1) !important;
+}
+
+.benita {
+  font-size: 100px;
+  font-family: helvetica, serif;
+  color: white;
+}

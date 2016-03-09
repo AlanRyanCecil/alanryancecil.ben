@@ -1,5 +1,5 @@
-<div class="main-shell" ng-controller="RootCtrl">
-  <md-toolbar>
+<div class="main-shell" id="header" ng-controller="RootCtrl">
+  <md-toolbar class="transparent">
     <div class="md-toolbar-tools">
       <md-button ng-click="toggleLeft()" class="md-icon-button" aria-label="Settings">
         <md-icon md-svg-icon="assets/icons/menu.svg"></md-icon>
@@ -8,9 +8,9 @@
           <span>alandot</span>
       </h2>
 
-      <md-button ng-href="/main">Main</md-button>
       <md-button ng-href="/animation">Animation</md-button>
-      
+      <md-button ng-href="/temp">temp</md-button>
+
       <span flex=""></span>
       <md-menu>
         <md-button aria-label="Open phone interactions menu" class="md-icon-button" ng-click="openMenu($mdOpenMenu, $event)">
