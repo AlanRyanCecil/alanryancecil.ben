@@ -16,6 +16,9 @@
       <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
       <!-- endbower -->
     <!-- endbuild -->
+    <link href='https://fonts.googleapis.com/css?family=Amatic+SC' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
+    <link href='https://fonts.googleapis.com/css?family=Special+Elite' rel='stylesheet' type='text/css'>
 
 
     <link rel="stylesheet" href="xxxx.css">
@@ -26,7 +29,6 @@
       <!-- injector:css -->
       <!-- endinjector -->
     <!-- endbuild -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
   </head>
   <body ng-app="alandotApp" ng-controller="RootCtrl" ng-cloak>
     <!--[if lt IE 7]>
@@ -86,7 +88,7 @@
       <script src="bower_components/angular-socket-io/socket.js"></script>
       <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
       <!-- endbower -->
-      <script src="socket.io-client/socket.io.js"></script>
+      <!-- <script src="socket.io-client/socket.io.js"></script> -->
     <!-- endbuild -->
 
 
@@ -122,10 +124,13 @@
           <script src="app/backgroundThree/fragmentShaderDepth.frag"></script>
  -->
 
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r74/three.min.js"></script>
+          <script src="../node_modules/requirejs/require.js"></script>
           <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r74/three.min.js"></script>
+          <script src="vendor/three.js/examples/js/loaders/OBJLoader.js"></script>
           <script src="vendor/three.js/examples/js/loaders/SVGLoader.js"></script>
           <script src="vendor/three.js/examples/js/renderers/SVGRenderer.js"></script>
+          <script src="vendor/three.js/examples//js//renderers/Projector.js"></script>
           <script src="vendor/three.js/examples/js/renderers/CSS3DRenderer.js"></script>
 
 

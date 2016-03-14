@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('alandotApp')
-  .directive('backgroundThree', function () {
+  .directive('backgroundThree', function ($log) {
     return {
       restrict: 'E',
       link: function (scope, element, attrs) {
-        var scene,
+        var scene, svgScene,
                 width = window.innerWidth,
                 height = window.innerHeight,
                 container = document.getElementById('three-scene'),
@@ -13,13 +13,17 @@ angular.module('alandotApp')
                 aspect = width / height,
                 near = 0.1,
                 far = 10000,
+                cameraTarget,
             camera = new THREE.PerspectiveCamera( fov, aspect, near, far ),
+            svgCamera = new THREE.PerspectiveCamera( fov, aspect, near, far ),
             renderer,
-                cssRenderer, svgRenderer,
+                svgRenderer, cssRenderer,
             lightAmbient = new THREE.AmbientLight(),
                 lightTop = new THREE.SpotLight(0xFFFFFF),
                 topLightHelper = new THREE.SpotLightHelper(lightTop),
-            loader = new THREE.TextureLoader(),
+            textLoader = new THREE.TextureLoader(),
+            objLoader = new THREE.OBJLoader(),
+            jsonLoader = new THREE.JSONLoader(),
             mouse = new THREE.Vector2( 20000, 0 ),
                 mouseClick  = new THREE.Vector2(),
                 onClickPosition = new THREE.Vector2(),
@@ -29,13 +33,16 @@ angular.module('alandotApp')
 
             objectGroup = new THREE.Object3D(),
                 cube,
+                deer,
                 icosahedron,
                     icosahedronMaterial, wireMaterialIcosa,icosaPivot,
+                torus, birds,
                 sky,
                     skyGeometry, skyWidth, skyHeight, skyPinch,
                 ground,
                 oakTree,
                     oakTreeTexture, oakTreeMaterial,
+                wwwBenita, hello,
             videoStatic,
                 movieScreen, movieGeometry, movieMaterial, videoImage, videoImageContext, videoTexture,
 
@@ -57,24 +64,39 @@ angular.module('alandotApp')
             renderer.shadowMap.enabled = true;
             renderer.domElement.style.position = 'absolute';
             renderer.domElement.style.top = 0;
-            // renderer.domElement.style.zIndex = 1;
+            renderer.domElement.style.zIndex = 1;
             return renderer;
         }
 
 
+        function createSvgRenderer () {
+            var svgRenderer = new THREE.SVGRenderer();
+
+            svgRenderer.setSize( width, height );
+            svgRenderer.setPixelRatio( window.devicePixelRatio );
+            svgRenderer.setClearColor(0x000000, 0);
+            svgRenderer.domElement.style.position = 'absolute';
+            svgRenderer.domElement.style.top = 0;
+            svgRenderer.domElement.style.left = 0;
+            svgRenderer.domElement.style.zIndex = 1;
+            return svgRenderer;
+        }
+
+
         function createCssRenderer () {
-            var cssRenderer = new THREE.CSS3DRenderer();
+            var cssRenderer = new THREE.CSS3DRenderer({alpha: true});
 
             cssRenderer.setSize( width, height );
+            cssRenderer.setClearColor(0x000000, 0);
             cssRenderer.domElement.style.position = 'absolute';
             cssRenderer.domElement.style.top = 0;
-            // cssRenderer.domElement.style.zIndex = 0;
+            cssRenderer.domElement.style.zIndex = 0;
             return cssRenderer;
         }
 
 
         function createPlane(w, h) {
-            var material = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0, side: THREE.DoubleSide });
+            var material = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0, side: THREE.DoubleSide, blending: THREE.NoBlending });
             var geometry = new THREE.PlaneGeometry(w, h);
             var mesh = new THREE.Mesh(geometry, material);
 
@@ -85,7 +107,7 @@ angular.module('alandotApp')
         function createCssObject ( w, h, url ) {
             var html = [
                 '<div>',
-                        '<iframe src="' + url + '" width="' + w + '" height="' + h + '" frameBorder="0"></iframe>',
+                    '<iframe src="' + url + '" width="' + w + '" height="' + h + '" frameBorder="0"></iframe>',
                 '</div>'
             ].join('\n');
 
@@ -120,6 +142,33 @@ angular.module('alandotApp')
         }
 
 
+        function createTextObject (text, font, color) {
+            var width = 2048;
+            var height = 512;
+            var canvas = document.createElement('canvas');
+            canvas.id = text;
+            canvas.width = width;
+            canvas.height = height;
+
+            var context = canvas.getContext('2d');
+            context.font = '20em ' + font;
+            context.fillStyle = color;
+            context.textAlign = 'center';
+            context.fillText(text, width / 2, height - (height * .4));
+
+            var texture = new THREE.Texture( canvas );
+            texture.anisotropy = 4;
+            texture.minFilter = THREE.LinearFilter;
+            texture.needsUpdate = true;
+
+            var plane = new THREE.Mesh(
+                new THREE.PlaneGeometry(400, 100),
+                new THREE.MeshBasicMaterial({ map: texture, transparent: true, side: THREE.DoubleSide })
+            );
+            return plane
+        }
+
+
         function degToRad (deg) {
             return (Math.PI / 180) * deg;
         }
@@ -146,6 +195,7 @@ angular.module('alandotApp')
             camera.aspect = width / height;
             camera.updateProjectionMatrix();
             renderer.setSize( width, height );
+            svgRenderer.setSize( width, height );
             cssRenderer.setSize( width, height );
         }
 
@@ -195,24 +245,28 @@ angular.module('alandotApp')
             objectGroup.add( movieScreen, moreStatic );
         }
 
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
         function initScene () {
-            renderer = createWebGlRnderer({ antialias: true, alpha: true });
-            cssRenderer = createCssRenderer({ aplha: true });
 
+            renderer = createWebGlRnderer();
+            svgRenderer = createSvgRenderer();
+            cssRenderer = createCssRenderer();
             scene = new THREE.Scene();
-
+            svgScene = new THREE.Scene();
             container.appendChild(renderer.domElement);
+            container.appendChild(svgRenderer.domElement);
             container.appendChild(cssRenderer.domElement);
 
-
-            camera.position.set(0, 0, 100);
+            camera.position.set(0, 0, 200);
+            svgCamera.position.set(0, 60, 120);
 
             lightAmbient.intensity = .2;
 
-            lightTop.position.set(-200, 50,-60);
-                lightTop.target.position.set(0, 0, -100);
+            lightTop.position.set(-200, 50, 40);
+                lightTop.target.position.set(0, 0, 0);
                 lightTop.intensity = 1;
                 lightTop.angle = degToRad(90);
                 lightTop.exponent = 50;
@@ -222,34 +276,29 @@ angular.module('alandotApp')
                 lightTop.shadow.camera.near = 1;
 
 
-
 ////////////////////////////////////////////////////////////EXPERIMENTS/////////////////////////////////////////////////////////////////////////
 
 
-            var wwwBenita = create3dPage( 900, 600, 'http://benitawlee.com/');
-            wwwBenita.position.set(0, -100, -100);
-            scene.add(wwwBenita);
 
-            var benita = createHtmlElement(300, 100, 'Benita');
-            benita.position.set(0, -50, -100);
-            scene.add( benita );
-
-            function svgCircle () {
-                var node = document.createElementNS( 'http://www.w3.org/2000/svg', 'circle' );
-                node.setAttribute( 'stroke', 'black' );
-                node.setAttribute( 'fill', 'red' );
-                node.setAttribute( 'r', '40' );
-
-                var object = new THREE.SVGObject( node );
-                object.position.set(0, -200, -30);
-                scene.add( object );
-                console.log("SVG: %s", object);
-
+            birds = new THREE.Points( new THREE.RingGeometry( 200, 300, 8, 1 ),
+                new THREE.PointsMaterial({color: 0xFFFFFF, size: 5}));
+                birds.rotation.x = degToRad(90);
+                birds.position.set(0, 150, -200);
+            var flock = {};
+            for ( var i = 0; i < 5; i++) {
+                flock[i] = birds.clone();
+                flock[i].rotation.z = .11 * i;
+                // objectGroup.add( flock[i] );
             }
-            svgCircle();
+                objectGroup.add( birds );
+
+                var birdWire = new THREE.WireframeHelper( birds );
+                // scene.add( birdWire );
+
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
             icosahedronMaterial = new THREE.MeshPhongMaterial({color: 0x80C152, shading: THREE.FlatShading});
             wireMaterialIcosa = new THREE.MeshBasicMaterial({ color: 0xDDDDDD, wireframe: true, wireframeLinewidth: 1 });
@@ -261,14 +310,44 @@ angular.module('alandotApp')
                 // icosahedron.children[0].receiveShadow = true;
                 icosahedron.children[1].scale.set(1.06, 1.06, 1.06);
                 icosahedron.children[0].add( icosahedron.children[1] )
-                icosahedron.children[0].position.set(0, 50, -120);
+                icosahedron.children[0].position.set(0, 50, -20);
+
+            objLoader.load('../../assets/models/obj/Deer.obj', function (obj) {
+                deer = obj;
+                deer.scale.set(.2, .2, .2);
+                deer.position.set( 0, 0, -300 );
+                deer.rotation.y = degToRad(30);
+                deer.castShadow = true;
+                objectGroup.add( deer );
+            });
+
+            // jsonLoader.load('../../assets/models/obj/Deer.obj', function ( geometry ) {
+            //     deer = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial({ Color: 0xFFFFFF }));
+            //     // deer.scale.set(.2, .2, .2);
+            //     // deer.position.set( 0, 0, -300 );
+            //     // deer.rotation.y = degToRad(30);
+            //     // deer.castShadow = true;
+            //     objectGroup.add( deer );
+            // });
+
+            var deerLight = new THREE.PointLight(0xFFECBE, .6 );
+                deerLight.position.set(-20, 50, -280);
+                objectGroup.add( deerLight );
+
+            torus = new THREE.Mesh(
+                new THREE.TorusGeometry( 240, 30, 10, 50 ),
+                new THREE.MeshBasicMaterial({ color: 0xF7F5F1, shading: THREE.FlatShading, wireframe: true })
+                );
+                torus.rotation.x = degToRad(90);
+                torus.position.set(0, 150, -200);
 
             cube = new THREE.Mesh(
                 new THREE.BoxGeometry( 50, 5, 50, 20, 2, 20 ),
                 new THREE.MeshPhongMaterial({ color: 0xF7F7F7, shading: THREE.SmoothShading, }));
-                cube.position.set(60, 5, -50);
+                cube.position.set(60, 5, 50);
                 cube.rotation.y = degToRad(45);
                 cube.castShadow = true;
+                console.log(cube);
 
             oakTreeTexture = new THREE.TextureLoader().load('../../assets/images/deer.png');
                 oakTreeMaterial = new THREE.MeshBasicMaterial( {
@@ -288,7 +367,7 @@ angular.module('alandotApp')
                     // side: THREE.DoubleSide
                 });
 
-                oakTree.position.set(-60, 73, -80);
+                oakTree.position.set(-60, 73, 20);
                 oakTree.rotation.y = degToRad(0);
                 oakTree.receiveShadow = true;
                 oakTree.castShadow = true;
@@ -314,26 +393,48 @@ angular.module('alandotApp')
                 skyGeometry.faces[1].vertexColors[2] = skyLowColor;
 
             sky = new THREE.Mesh( skyGeometry, new THREE.MeshBasicMaterial({ vertexColors: THREE.VertexColors }) );
-                sky.position.set(0, 0, -500);
+                sky.position.set(0, 0, -400);
 
             ground = new THREE.Mesh(
                 new THREE.BoxGeometry( 480, 550, .1, 48, 55, 1 ),
                 new THREE.MeshPhongMaterial({ color: 0x995522, shading: THREE.FlatShading, }));
                 ground.rotation.x = degToRad(-90);
                 ground.up = new THREE.Vector3( 1, 0, 0 );
-                ground.position.set(0, 0, -230);
+                ground.position.set(0, 0, -130);
                 ground.receiveShadow = true;
 
 
+//////////////////////////////////                          TEXT                             /////////////////////////////////////////////////////////
+
+
+            wwwBenita = create3dPage( 900, 600, 'http://benitawlee.com/');
+                wwwBenita.position.set(-110, 120, -100);
+                wwwBenita.castShadow = true;
+                // objectGroup.add(wwwBenita);
+
+            hello = createTextObject('Hello Benita', 'Amatic SC', '#E8DED5');
+            hello.position.set(0, 320, -140);
+
+            var love = createTextObject('I love you', 'Amatic SC', '#3BB19F');
+            love.position.set(0, 5, 130);
+            love.scale.set(.25, .25, .25);
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
             gridHelper = new THREE.GridHelper(400, 20);
-                gridHelper.position.set(0, -1, -100);
+                gridHelper.position.set(0, -1, 0);
 
                 objectGroup.add(
                     sky,
-                    icosahedron,
+                    // icosahedron,
+                    torus,
                     oakTree,
                     ground,
                     cube,
+                    hello,
+                    love,
                     lightTop.target,
                     gridHelper
                 );
@@ -346,12 +447,15 @@ angular.module('alandotApp')
                 lightTop,
                 objectGroup
                 );
-
+            // cameraTarget = new THREE.Vector3( 0, -150, -100 );
+            console.log("Taget: ", cameraTarget);
             // createBgStaticVideo();
             
         }
 
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
         function renderStaticBgVideo () {
             videoImageContext.drawImage( videoStatic, 0, 0 );
@@ -365,11 +469,15 @@ angular.module('alandotApp')
         }
 
         function render () {
-            cssRenderer.render( scene, camera );
+            // camera.lookAt( cameraTarget );
+            rotateObject( torus, 0, 0, -0.001 );
+            rotateObject( birds, 0, 0, -0.001 );
+            rotateObject( icosahedron.children[0], .0003, .001, .0002 );
             renderer.render(scene, camera);
+            svgRenderer.render(svgScene, svgCamera);
+            cssRenderer.render( scene, camera );
             requestAnimationFrame( render );
 
-            rotateObject( icosahedron.children[0], .0003, .001, .0002 );
             // topLightHelper.update();
             // renderStaticBgVideo();
         }
