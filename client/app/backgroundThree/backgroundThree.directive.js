@@ -5,19 +5,17 @@ angular.module('alandotApp')
     return {
       restrict: 'E',
       link: function (scope, element, attrs) {
-        var scene, svgScene,
+        var scene,
                 width = window.innerWidth,
                 height = window.innerHeight,
-                container = document.getElementById('three-scene'),
+                container,
                 fov = 50,
                 aspect = width / height,
                 near = 0.1,
                 far = 10000,
                 cameraTarget,
             camera = new THREE.PerspectiveCamera( fov, aspect, near, far ),
-            svgCamera = new THREE.PerspectiveCamera( fov, aspect, near, far ),
             renderer,
-                svgRenderer, cssRenderer,
             lightAmbient = new THREE.AmbientLight(),
                 lightTop = new THREE.SpotLight(0xFFFFFF),
                 deerLight,
@@ -51,7 +49,6 @@ angular.module('alandotApp')
 
             gridHelper,
             benita,
-            svgLoader = new THREE.SVGLoader(),
             endVar;
 
         window.addEventListener( 'resize', onWindowResize, false );
@@ -153,8 +150,6 @@ angular.module('alandotApp')
             camera.aspect = width / height;
             camera.updateProjectionMatrix();
             renderer.setSize( width, height );
-            svgRenderer.setSize( width, height );
-            cssRenderer.setSize( width, height );
         }
 
 
@@ -210,16 +205,15 @@ angular.module('alandotApp')
         function initScene () {
 
             renderer = CreateRenderer.WebGl( width, height );
-            svgRenderer = CreateRenderer.Svg( width, height );
-            cssRenderer = CreateRenderer.Css( width, height );
             scene = new THREE.Scene();
-            svgScene = new THREE.Scene();
-            container.appendChild(renderer.domElement);
-            container.appendChild(svgRenderer.domElement);
-            container.appendChild(cssRenderer.domElement);
+            container = element;
+            container.css('z-index', '-1');
+            container.css('position', 'fixed');
+            container.css('top', '0');
+            container.css('left', '0');
+            container.append(renderer.domElement);
 
             camera.position.set(0, 0, 200);
-            svgCamera.position.set(0, 60, 120);
 
             lightAmbient.intensity = .2;
 
@@ -274,13 +268,12 @@ angular.module('alandotApp')
             });
 
             jsonLoader.load('../../assets/models/json/frame.json', function ( geometry ) {
-                frame = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial({color: 0xD9D186, transparent: true, opacity: 1}) );
+                frame = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial({color: 0xFFF8E1, transparent: true, opacity: 1}) );
                 objectGroup.add( frame );
             });
 
             jsonLoader.load('../../assets/models/json/tree.json', function (geometry) {
                 tree = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({color: 0x23180E}));
-                console.log("tree", tree);
                 tree.rotation.x = Utilities.degToRad(90);
                 tree.position.set(0, 30, -300);
                 tree.scale.set(3, 3, 3);
@@ -300,7 +293,6 @@ angular.module('alandotApp')
                 cube.position.set(60, 5, 50);
                 cube.rotation.y = Utilities.degToRad(45);
                 cube.castShadow = true;
-                console.log(cube);
 
             oakTreeTexture = new THREE.TextureLoader().load('../../assets/images/deer.png');
                 oakTreeMaterial = new THREE.MeshBasicMaterial( {
@@ -368,10 +360,10 @@ angular.module('alandotApp')
                 wwwBenita.castShadow = true;
                 // objectGroup.add(wwwBenita);
 
-            hello = createTextObject('Hello Benita', 'Amatic SC', '#E8DED5');
+            hello = createTextObject('Hello Benita', 'Amatic SC', '#EA96D8');
             hello.position.set(0, 320, -140);
 
-            var love = createTextObject('I love you', 'Amatic SC', '#3BB19F');
+            var love = createTextObject('I love you', 'Amatic SC', '#7CECD7');
             love.position.set(0, 8, 130);
             love.scale.set(.25, .25, .25);
 
@@ -433,8 +425,6 @@ angular.module('alandotApp')
             Animation.rotateObject(stars, 0, -.0002, 0);
             Animation.rotateObject( icosahedron.children[0], .0003, .001, .0002 );
             renderer.render(scene, camera);
-            // svgRenderer.render(svgScene, svgCamera);
-            // cssRenderer.render( scene, camera );
             requestAnimationFrame( render );
 
             topLightHelper.update();

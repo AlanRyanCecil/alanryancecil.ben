@@ -13,6 +13,11 @@
    }
  }
 
+
+.main-shell {
+    font-family: 'Special Elite';
+}
+
 // Component styles are injected through grunt
 // injector
 @import 'account/login/login.scss';
@@ -20,9 +25,10 @@
 @import 'animation/animation.scss';
 @import 'background/background.scss';
 @import 'backgroundThree/backgroundThree.scss';
+@import 'example/main.scss';
 @import 'footer/footer.scss';
 @import 'header/header.scss';
-@import 'main/main.scss';
+@import 'home/home.scss';
 @import 'root/root.scss';
 @import 'sidenav/sidenav.scss';
 // endinjector

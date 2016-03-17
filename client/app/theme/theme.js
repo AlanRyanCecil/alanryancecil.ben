@@ -3,8 +3,10 @@
 angular.module('alandotApp')
     .config(function ($mdThemingProvider) {
         $mdThemingProvider.theme('default')
-            .primaryPalette('orange', {
-                'default': '900'
+            .primaryPalette('amber', {
+                'default': '50'
             })
-            .accentPalette('blue-grey');
+            .accentPalette('amber', {
+                'default': '100'
+            });
     })

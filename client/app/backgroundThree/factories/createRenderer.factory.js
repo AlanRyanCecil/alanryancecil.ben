@@ -13,7 +13,7 @@ angular.module('alandotApp').factory('CreateRenderer', function(){
             renderer.shadowMap.type = THREE.PCFSoftShadowMap;
             renderer.domElement.style.position = 'absolute';
             renderer.domElement.style.top = 0;
-            renderer.domElement.style.zIndex = 1;
+            renderer.domElement.style.zIndex = -2;
             return renderer;
         },
 
@@ -26,7 +26,7 @@ angular.module('alandotApp').factory('CreateRenderer', function(){
             svgRenderer.domElement.style.position = 'absolute';
             svgRenderer.domElement.style.top = 0;
             svgRenderer.domElement.style.left = 0;
-            svgRenderer.domElement.style.zIndex = 1;
+            svgRenderer.domElement.style.zIndex = -1;
             return svgRenderer;
         },
 
@@ -37,7 +37,7 @@ angular.module('alandotApp').factory('CreateRenderer', function(){
             cssRenderer.setClearColor(0x000000, 0);
             cssRenderer.domElement.style.position = 'absolute';
             cssRenderer.domElement.style.top = 0;
-            cssRenderer.domElement.style.zIndex = 0;
+            cssRenderer.domElement.style.zIndex = -3;
             return cssRenderer;
         }
     };
