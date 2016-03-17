@@ -47,7 +47,7 @@
     </nav>
 
     <main>
-      <a href="/animation"> <md-button style="position: absolute; z-index: 100;">Animation</md-button> </a>
+      <!-- <a href="/animation"> <md-button style="position: absolute; z-index: 100;">Animation</md-button> </a> -->
       <ui-view name="main"></ui-view>
     </main>
 
@@ -124,9 +124,9 @@
           <script src="app/backgroundThree/fragmentShaderDepth.frag"></script>
  -->
 
-          <script src="../node_modules/requirejs/require.js"></script>
           <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
           <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r74/three.min.js"></script>
+          <script src="vendor/three.js/examples/js/loaders/MTLLoader.js"></script>
           <script src="vendor/three.js/examples/js/loaders/OBJLoader.js"></script>
           <script src="vendor/three.js/examples/js/loaders/SVGLoader.js"></script>
           <script src="vendor/three.js/examples/js/renderers/SVGRenderer.js"></script>
@@ -148,7 +148,15 @@
           <script src="app/animation/animation.controller.js"></script>
           <script src="app/animation/animation.js"></script>
           <script src="app/background/background.controller.js"></script>
+          <script src="app/backgroundThree/animation.factory.js"></script>
           <script src="app/backgroundThree/backgroundThree.directive.js"></script>
+          <script src="app/backgroundThree/createCloud.factory.js"></script>
+          <script src="app/backgroundThree/createRenderer.factory.js"></script>
+          <script src="app/backgroundThree/factories/animation.factory.js"></script>
+          <script src="app/backgroundThree/factories/createCloud.factory.js"></script>
+          <script src="app/backgroundThree/factories/createRenderer.factory.js"></script>
+          <script src="app/backgroundThree/factories/utilities.factory.js"></script>
+          <script src="app/backgroundThree/utilities.factory.js"></script>
           <script src="app/footer/footer.controller.js"></script>
           <script src="app/footer/footer.js"></script>
           <script src="app/header/header.controller.js"></script>

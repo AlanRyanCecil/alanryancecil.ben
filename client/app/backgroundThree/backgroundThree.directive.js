@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('alandotApp')
-  .directive('backgroundThree', function ($log) {
+  .directive('backgroundThree', function ($log, CreateRenderer, Utilities, Animation, Cloud) {
     return {
       restrict: 'E',
       link: function (scope, element, attrs) {
@@ -20,7 +20,8 @@ angular.module('alandotApp')
                 svgRenderer, cssRenderer,
             lightAmbient = new THREE.AmbientLight(),
                 lightTop = new THREE.SpotLight(0xFFFFFF),
-                topLightHelper = new THREE.SpotLightHelper(lightTop),
+                deerLight,
+                topLightHelper, // = new THREE.SpotLightHelper(lightTop),
             textLoader = new THREE.TextureLoader(),
             objLoader = new THREE.OBJLoader(),
             jsonLoader = new THREE.JSONLoader(),
@@ -34,13 +35,15 @@ angular.module('alandotApp')
             objectGroup = new THREE.Object3D(),
                 cube,
                 deer,
+                frame,
                 icosahedron,
                     icosahedronMaterial, wireMaterialIcosa,icosaPivot,
-                torus, birds,
-                sky,
+                torus, flock,
+                sky, stars,
                     skyGeometry, skyWidth, skyHeight, skyPinch,
                 ground,
-                oakTree,
+                barn,
+                oakTree, tree,
                     oakTreeTexture, oakTreeMaterial,
                 wwwBenita, hello,
             videoStatic,
@@ -53,46 +56,6 @@ angular.module('alandotApp')
 
         window.addEventListener( 'resize', onWindowResize, false );
         window.addEventListener( 'scroll', scrollScene, false );
-
-
-        function createWebGlRnderer () {
-            var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-
-            renderer.setSize( width, height );
-            renderer.setPixelRatio(window.devicePixelRatio);
-            renderer.setClearColor(0x000000);
-            renderer.shadowMap.enabled = true;
-            renderer.domElement.style.position = 'absolute';
-            renderer.domElement.style.top = 0;
-            renderer.domElement.style.zIndex = 1;
-            return renderer;
-        }
-
-
-        function createSvgRenderer () {
-            var svgRenderer = new THREE.SVGRenderer();
-
-            svgRenderer.setSize( width, height );
-            svgRenderer.setPixelRatio( window.devicePixelRatio );
-            svgRenderer.setClearColor(0x000000, 0);
-            svgRenderer.domElement.style.position = 'absolute';
-            svgRenderer.domElement.style.top = 0;
-            svgRenderer.domElement.style.left = 0;
-            svgRenderer.domElement.style.zIndex = 1;
-            return svgRenderer;
-        }
-
-
-        function createCssRenderer () {
-            var cssRenderer = new THREE.CSS3DRenderer({alpha: true});
-
-            cssRenderer.setSize( width, height );
-            cssRenderer.setClearColor(0x000000, 0);
-            cssRenderer.domElement.style.position = 'absolute';
-            cssRenderer.domElement.style.top = 0;
-            cssRenderer.domElement.style.zIndex = 0;
-            return cssRenderer;
-        }
 
 
         function createPlane(w, h) {
@@ -169,11 +132,6 @@ angular.module('alandotApp')
         }
 
 
-        function degToRad (deg) {
-            return (Math.PI / 180) * deg;
-        }
-
-
         function scrollScene () {
             var minCam = ( ground.position.y + objectGroup.position.y + 10 );
             if ( camera.position.y >= minCam ) {
@@ -239,7 +197,7 @@ angular.module('alandotApp')
             movieScreen.position.set(0, 350, -2000);
 
             var moreStatic = movieScreen.clone();
-            moreStatic.rotation.z = degToRad(180);
+            moreStatic.rotation.z = Utilities.$1(180);
             // moreStatic.position.set(0, 0, 0);
 
             objectGroup.add( movieScreen, moreStatic );
@@ -251,9 +209,9 @@ angular.module('alandotApp')
 
         function initScene () {
 
-            renderer = createWebGlRnderer();
-            svgRenderer = createSvgRenderer();
-            cssRenderer = createCssRenderer();
+            renderer = CreateRenderer.WebGl( width, height );
+            svgRenderer = CreateRenderer.Svg( width, height );
+            cssRenderer = CreateRenderer.Css( width, height );
             scene = new THREE.Scene();
             svgScene = new THREE.Scene();
             container.appendChild(renderer.domElement);
@@ -268,84 +226,79 @@ angular.module('alandotApp')
             lightTop.position.set(-200, 50, 40);
                 lightTop.target.position.set(0, 0, 0);
                 lightTop.intensity = 1;
-                lightTop.angle = degToRad(90);
+                lightTop.angle = Utilities.degToRad(90);
                 lightTop.exponent = 50;
                 lightTop.castShadow = true;
                 lightTop.shadow.bias = 0;
                 lightTop.shadow.mapSize.set(1024, 1024);
                 lightTop.shadow.camera.near = 1;
+                topLightHelper = new THREE.SpotLightHelper( lightTop );
 
 
 ////////////////////////////////////////////////////////////EXPERIMENTS/////////////////////////////////////////////////////////////////////////
 
 
 
-            birds = new THREE.Points( new THREE.RingGeometry( 200, 300, 8, 1 ),
-                new THREE.PointsMaterial({color: 0xFFFFFF, size: 5}));
-                birds.rotation.x = degToRad(90);
-                birds.position.set(0, 150, -200);
-            var flock = {};
-            for ( var i = 0; i < 5; i++) {
-                flock[i] = birds.clone();
-                flock[i].rotation.z = .11 * i;
-                // objectGroup.add( flock[i] );
-            }
-                objectGroup.add( birds );
-
-                var birdWire = new THREE.WireframeHelper( birds );
-                // scene.add( birdWire );
 
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-            icosahedronMaterial = new THREE.MeshPhongMaterial({color: 0x80C152, shading: THREE.FlatShading});
+            icosahedronMaterial = new THREE.MeshPhongMaterial({color: 0xBEE489, shading: THREE.FlatShading});
             wireMaterialIcosa = new THREE.MeshBasicMaterial({ color: 0xDDDDDD, wireframe: true, wireframeLinewidth: 1 });
             icosahedron = new THREE.SceneUtils.createMultiMaterialObject(
-                new THREE.IcosahedronGeometry( 25, 1 ),
+                new THREE.IcosahedronGeometry( 15, 1 ),
                 [ icosahedronMaterial, wireMaterialIcosa ]);
 
                 icosahedron.children[0].castShadow = true;
                 // icosahedron.children[0].receiveShadow = true;
                 icosahedron.children[1].scale.set(1.06, 1.06, 1.06);
                 icosahedron.children[0].add( icosahedron.children[1] )
-                icosahedron.children[0].position.set(0, 50, -20);
+                icosahedron.children[0].position.set(-80, 50, 50);
 
-            objLoader.load('../../assets/models/obj/Deer.obj', function (obj) {
-                deer = obj;
-                deer.scale.set(.2, .2, .2);
-                deer.position.set( 0, 0, -300 );
-                deer.rotation.y = degToRad(30);
+            deerLight = new THREE.SpotLight(0xFFECBE, .3 );
+                deerLight.castShadow = true;
+                deerLight.position.set(-30, 100, -200);
+                deerLight.target.position.set(20, 0, -320);
+                objectGroup.add(deerLight);
+
+            jsonLoader.load('../../assets/models/json/deer.json', function ( geometry ) {
+                deer = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial({ color: 0xFFFFFF, shading: THREE.FlatShading }));
+                deer.scale.set(4, 4, 4);
+                deer.position.set( -5, 0, 0 );
+                deer.rotation.y = Utilities.degToRad(30);
                 deer.castShadow = true;
+                // deer.add(deerLight);
                 objectGroup.add( deer );
             });
 
-            // jsonLoader.load('../../assets/models/obj/Deer.obj', function ( geometry ) {
-            //     deer = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial({ Color: 0xFFFFFF }));
-            //     // deer.scale.set(.2, .2, .2);
-            //     // deer.position.set( 0, 0, -300 );
-            //     // deer.rotation.y = degToRad(30);
-            //     // deer.castShadow = true;
-            //     objectGroup.add( deer );
-            // });
+            jsonLoader.load('../../assets/models/json/frame.json', function ( geometry ) {
+                frame = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial({color: 0xD9D186, transparent: true, opacity: 1}) );
+                objectGroup.add( frame );
+            });
 
-            var deerLight = new THREE.PointLight(0xFFECBE, .6 );
-                deerLight.position.set(-20, 50, -280);
-                objectGroup.add( deerLight );
+            jsonLoader.load('../../assets/models/json/tree.json', function (geometry) {
+                tree = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({color: 0x23180E}));
+                console.log("tree", tree);
+                tree.rotation.x = Utilities.degToRad(90);
+                tree.position.set(0, 30, -300);
+                tree.scale.set(3, 3, 3);
+                objectGroup.add(tree);
+            });
 
             torus = new THREE.Mesh(
                 new THREE.TorusGeometry( 240, 30, 10, 50 ),
                 new THREE.MeshBasicMaterial({ color: 0xF7F5F1, shading: THREE.FlatShading, wireframe: true })
                 );
-                torus.rotation.x = degToRad(90);
+                torus.rotation.x = Utilities.degToRad(90);
                 torus.position.set(0, 150, -200);
 
             cube = new THREE.Mesh(
                 new THREE.BoxGeometry( 50, 5, 50, 20, 2, 20 ),
                 new THREE.MeshPhongMaterial({ color: 0xF7F7F7, shading: THREE.SmoothShading, }));
                 cube.position.set(60, 5, 50);
-                cube.rotation.y = degToRad(45);
+                cube.rotation.y = Utilities.degToRad(45);
                 cube.castShadow = true;
                 console.log(cube);
 
@@ -368,12 +321,12 @@ angular.module('alandotApp')
                 });
 
                 oakTree.position.set(-60, 73, 20);
-                oakTree.rotation.y = degToRad(0);
+                oakTree.rotation.y = Utilities.degToRad(0);
                 oakTree.receiveShadow = true;
                 oakTree.castShadow = true;
 
             skyGeometry = new THREE.Geometry();
-                skyWidth = 480, skyHeight = 300, skyPinch = 250;
+                skyWidth = 480, skyHeight = 300, skyPinch = 240;
                 skyGeometry.vertices.push(
                     new THREE.Vector3(-skyWidth / 2, 0, 0),
                     new THREE.Vector3(skyWidth / 2, 0, 0),
@@ -383,7 +336,7 @@ angular.module('alandotApp')
                 skyGeometry.faces.push( new THREE.Face3( 0, 1, 2));
                 skyGeometry.faces.push( new THREE.Face3( 2, 3, 0));
 
-                var skyHighColor = new THREE.Color( 0x3377FF );
+                var skyHighColor = new THREE.Color( 0x3600B2 );
                 var skyLowColor = new THREE.Color( 0x77CCFF );
                 skyGeometry.faces[0].vertexColors[0] = skyLowColor;
                 skyGeometry.faces[0].vertexColors[1] = skyLowColor;
@@ -395,10 +348,13 @@ angular.module('alandotApp')
             sky = new THREE.Mesh( skyGeometry, new THREE.MeshBasicMaterial({ vertexColors: THREE.VertexColors }) );
                 sky.position.set(0, 0, -400);
 
+            stars = Cloud(300, .5, 0x7BDCFF, 500, 300, 500, 0);
+            stars.position.set(0, 150, -250);
+
             ground = new THREE.Mesh(
                 new THREE.BoxGeometry( 480, 550, .1, 48, 55, 1 ),
                 new THREE.MeshPhongMaterial({ color: 0x995522, shading: THREE.FlatShading, }));
-                ground.rotation.x = degToRad(-90);
+                ground.rotation.x = Utilities.degToRad(-90);
                 ground.up = new THREE.Vector3( 1, 0, 0 );
                 ground.position.set(0, 0, -130);
                 ground.receiveShadow = true;
@@ -416,7 +372,7 @@ angular.module('alandotApp')
             hello.position.set(0, 320, -140);
 
             var love = createTextObject('I love you', 'Amatic SC', '#3BB19F');
-            love.position.set(0, 5, 130);
+            love.position.set(0, 8, 130);
             love.scale.set(.25, .25, .25);
 
 
@@ -428,14 +384,18 @@ angular.module('alandotApp')
 
                 objectGroup.add(
                     sky,
+                    stars,
+                    // flock,
                     // icosahedron,
-                    torus,
-                    oakTree,
+                    // torus,
+                    // oakTree,
+                    // tree,
                     ground,
-                    cube,
+                    // cube,
                     hello,
                     love,
                     lightTop.target,
+                    deerLight.target,
                     gridHelper
                 );
                 objectGroup.position.set(0, -250, 0);
@@ -447,8 +407,6 @@ angular.module('alandotApp')
                 lightTop,
                 objectGroup
                 );
-            // cameraTarget = new THREE.Vector3( 0, -150, -100 );
-            console.log("Taget: ", cameraTarget);
             // createBgStaticVideo();
             
         }
@@ -456,29 +414,30 @@ angular.module('alandotApp')
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
         function renderStaticBgVideo () {
             videoImageContext.drawImage( videoStatic, 0, 0 );
             videoTexture.needsUpdate = true;
         }
 
-        function rotateObject( object, xs, ys, zs ) {
-            object.rotation.x += xs;
-            object.rotation.y += ys;
-            object.rotation.z += zs;
+        var elev = .001;
+        function fly () {
+            flock.children.forEach(function(elem){
+                Animation.rotateObject( elem, 0, elem.geometry.speed, 0 );
+                var posy = elem.position.y;
+            })
         }
 
         function render () {
-            // camera.lookAt( cameraTarget );
-            rotateObject( torus, 0, 0, -0.001 );
-            rotateObject( birds, 0, 0, -0.001 );
-            rotateObject( icosahedron.children[0], .0003, .001, .0002 );
+            // Animation.rotateObject( torus, 0, 0, -0.001 );
+            // Animation.rotateObject( birds, 0, 0, -0.001 );
+            Animation.rotateObject(stars, 0, -.0002, 0);
+            Animation.rotateObject( icosahedron.children[0], .0003, .001, .0002 );
             renderer.render(scene, camera);
-            svgRenderer.render(svgScene, svgCamera);
-            cssRenderer.render( scene, camera );
+            // svgRenderer.render(svgScene, svgCamera);
+            // cssRenderer.render( scene, camera );
             requestAnimationFrame( render );
 
-            // topLightHelper.update();
+            topLightHelper.update();
             // renderStaticBgVideo();
         }
 
